@@ -20,15 +20,22 @@ public class BestFitMemoryAllocator {
     }
 
     public static void allocateMemory(int requestSize) {
+        // Input validation: Check if the request size is invalid
+        if (requestSize <= 0) {
+            System.out.println("Allocation failed. Request size must be greater than 0.");
+            return;
+        }
+    
         MemoryBlock bestBlock = null;
         for (MemoryBlock block : memoryBlocks) {
             if (!block.allocated && block.size >= requestSize && (bestBlock == null || block.size < bestBlock.size)) {
                 bestBlock = block;
             }
         }
+    
         if (bestBlock != null) {
             bestBlock.size -= requestSize;
-            if (bestBlock.size == 0) bestBlock.allocated = true;
+            if (bestBlock.size == 0) bestBlock.allocated = true; 
             System.out.println("Allocation successful. Request size: " + requestSize);
         } else {
             System.out.println("Allocation failed. No suitable block found.");
